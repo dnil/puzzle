@@ -44,6 +44,7 @@ htmlcov
 TRASH*
 *.tar.gz
 .vagrant
+dev/
 
 # SublimeText: workspace files are user-specific
 *.sublime-workspace
@@ -64,3 +65,12 @@ node_modules/
 
 # otto
 .otto
+
+# mkdocs
+site/
+
+# Database/testing files
+*.db
+*.sqlite3
+*.zip
+TODO
