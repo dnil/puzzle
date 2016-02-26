@@ -82,7 +82,7 @@
             <li class="list-group-item">
               <span class="badge">
                 {% if frequency.value %}
-                  {{ frequency.value|round(4) }}
+                  {{ frequency.value|float|round(4) }}
                 {% else %}
                   —
                 {% endif %}
