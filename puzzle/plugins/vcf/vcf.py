@@ -71,7 +71,7 @@ class VcfPlugin(VariantMixin, CaseMixin, Plugin):
             for case_obj in self.case_objs:
                 for ind in case_obj.individuals:
                     self.individuals.append(ind)
-        
+
         self.filters.can_filter_gene = True
         self.filters.can_filter_frequency = True
         self.filters.can_filter_cadd = True
@@ -79,6 +79,7 @@ class VcfPlugin(VariantMixin, CaseMixin, Plugin):
         self.filters.can_filter_impact_severity = True
         self.filters.can_filter_sv = True
         self.filters.can_filter_inheritance = True
+        self.filters.can_filter_sv_len=True
 
     def check_setup(self, case_lines):
         """Make some small tests to see if setup is correct"""
