@@ -456,6 +456,7 @@ class VariantMixin(BaseVariantMixin):
         # Add transcript information:
         gmaf = None
         exac = None
+        max_freq = None
         if vep_string:
             for transcript_info in vep_info:
                 transcript = self._get_vep_transcripts(transcript_info)
@@ -466,6 +467,10 @@ class VariantMixin(BaseVariantMixin):
                 exac_raw = transcript_info.get('ExAC_MAF')
                 if exac_raw:
                     exac = float(exac_raw.split(':')[-1])
+
+                max_freq_raw = transcript_info.get('pop_freq_max')
+                if max_freq_raw:
+                    max_freq = float(max_freq_raw.split(':')[-1])
 
                 variant.add_transcript(transcript)
 
@@ -481,6 +486,11 @@ class VariantMixin(BaseVariantMixin):
             for transcript_info in snpeff_info:
                 transcript = self._get_snpeff_transcripts(transcript_info)
                 variant.add_transcript(transcript)
+
+        if max_freq:
+            variant.set_max_freq(max_freq)
+        else:
+            variant.set_max_freq()
 
         most_severe_consequence = get_most_severe_consequence(
             variant['transcripts']
