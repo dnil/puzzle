@@ -16,7 +16,7 @@
           <input type="text" class="form-control" name="cadd" type="number" placeholder="23.4" step="0.1" value="{{ filters.cadd or '' }}">
         </div>
       {% endif %}
-      {% if db.filters.can_filter_sv_len %}
+      {% if db.filters.can_filter_sv_len and db.variant_type == 'sv'%}
         <div class="col-md-4">
           <label class="control-label">SV Len</label>
           <input type="text" class="form-control" name="sv_len" type="number" placeholder="23.4" step="0.1" value="{{ filters.sv_len or '' }}">
@@ -28,7 +28,6 @@
   {% if db.filters.can_filter_gene %}
     <div class="form-group">
       <div class="row">
-
           <div class="col-md-12">
             <label class="control-label">Genes</label>
             <input type="text" class="form-control" name="gene_symbol" placeholder="ADK,LPP" value="{{ (filters.gene_symbols or '')|join(',') }}">

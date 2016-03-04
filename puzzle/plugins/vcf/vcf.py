@@ -64,6 +64,8 @@ class VcfPlugin(VariantMixin, CaseMixin, Plugin):
                 for ind in case_obj.individuals:
                     self.individuals.append(ind)
 
+        # check vcf header for datatypes supported by filters?
+        print "DEBUG: setting can_filter!\n"
         self.filters = DotDict(
             can_filter_frequency=True,
             can_filter_cadd=True,
@@ -71,8 +73,8 @@ class VcfPlugin(VariantMixin, CaseMixin, Plugin):
             can_filter_gene=True,
             can_filter_inheritance=True,
             can_filter_sv=True,
-            can_filter_impact_severity=True
-            
+            can_filter_sv_len=True,
+            can_filter_impact_severity=True 
         )
 
     def check_setup(self, case_lines):
