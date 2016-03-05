@@ -2,6 +2,7 @@ from vcftoolbox import (get_vep_info, get_snpeff_info)
 
 from puzzle.models import (Transcript)
 
+import re
 
 class TranscriptExtras(object):
     """Collect the methods that deals with transcripts"""
@@ -26,7 +27,7 @@ class TranscriptExtras(object):
                 variant_obj.add_transcript(transcript)
 
         elif snpeff_string:
-            #Get the vep annotations
+            #Get the snpeff annotations
             snpeff_info = get_snpeff_info(
                 snpeff_string = snpeff_string,
                 snpeff_header = self.snpeff_header
@@ -60,13 +61,40 @@ class TranscriptExtras(object):
                 GMAF = transcript_info.get('GMAF'),
                 ExAC_MAF = transcript_info.get('ExAC_MAF')
             )
+
+        # If VEP was run without -hgvs (to save time / reference access)
+        # try to construct workaround c. and p. descriptions.
+        if ( transcript.HGVSc == "" ):
+            CDS_position = transcript_info.get('CDS_position')
+            Codons = transcript_info.get('Codons')
+            #re.compile(r'([A-Z].*[A-Z]');
+            # (NucA, NucB)
+            if( Codons != "" ):
+                m = re.match(
+                    r'[a-z]*(?P<nucA>[A-Z])[a-z]*/[a-z]*(?P<nucB>[A-Z])[a-z]*',
+                    Codons)
+                if m:
+                    transcript.HGVSc = "c.{}{}>{}".format(CDS_position,
+                                                          m.group('nucA'), 
+                                                          m.group('nucB'))
+
+        if ( transcript.HGVSp == "" ):
+            Protein_position = transcript_info.get('Protein_position')
+            Amino_acids = transcript_info.get('Amino_acids')
+            if( Amino_acids != ""):
+                m = re.match(r'(?P<resA>[A-Z])/(?P<resB>[A-Z])', Amino_acids)
+                if m:
+                    transcript.HGVSp = "p.{}{}{}".format(m.group('resA'), 
+                                                         Protein_position,
+                                                         m.group('resB'))
+
         return transcript
 
     def _get_snpeff_transcript(self, transcript_info):
         """Create a transcript based on the snpeff annotation
 
             Args:
-                transcript_info (dict): A dict with snpeff info
+            transcript_info (dict): A dict with snpeff info
 
             Returns:
                 transcript (puzzle.models.Transcript): A Transcripts
