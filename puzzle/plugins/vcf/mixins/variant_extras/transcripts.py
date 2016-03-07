@@ -1,8 +1,8 @@
+import re
+
 from vcftoolbox import (get_vep_info, get_snpeff_info)
 
 from puzzle.models import (Transcript)
-
-import re
 
 class TranscriptExtras(object):
     """Collect the methods that deals with transcripts"""
@@ -94,7 +94,7 @@ class TranscriptExtras(object):
         """Create a transcript based on the snpeff annotation
 
             Args:
-            transcript_info (dict): A dict with snpeff info
+                transcript_info (dict): A dict with snpeff info
 
             Returns:
                 transcript (puzzle.models.Transcript): A Transcripts
@@ -110,4 +110,3 @@ class TranscriptExtras(object):
                 HGVSp = transcript_info.get('HGVS.p')
             )
         return transcript
-    
