@@ -82,9 +82,9 @@ class VariantMixin(BaseVariantMixin, VariantExtras):
         
         limit = count + skip
 
-        genes = None
-        if filters.get('genes'):
-            genes = set(filters['genes'])
+        genes = set()
+        if filters.get('gene_ids'):
+            genes = set([gene_id.strip() for gene_id in filters['gene_ids']])
 
         frequency = None
         if filters.get('frequency'):
@@ -127,7 +127,7 @@ class VariantMixin(BaseVariantMixin, VariantExtras):
                 )
 
                 if genes and variant_obj:
-                    if not set(variant_obj['genes']).intersection(genes):
+                    if not set(variant_obj['gene_symbols']).intersection(genes):
                         variant_obj = None
 
                 if impact_severities and variant_obj:
@@ -302,7 +302,6 @@ class VariantMixin(BaseVariantMixin, VariantExtras):
         self._add_hgnc_symbols(variant_obj)
         
         if add_all_info:
-            print('hej')
             self._add_genotype_calls(variant_obj, str(variant), case_obj)
             self._add_compounds(variant_obj, info_dict)
             self._add_gmaf(variant_obj, info_dict)
